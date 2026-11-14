@@ -7,14 +7,14 @@ from sqlalchemy.engine import URL
 
 
 # SQL Server configuration
-DB_SERVER = "172.31.0.206"
+DB_SERVER = "172.31.3.168"
 DB_PORT = 1433
 DB_NAME = "FastApi"
 
 DB_USERNAME = os.environ["DB_USERNAME"]
 DB_PASSWORD = os.environ["DB_PASSWORD"]
 
-ODBC_DRIVER = "ODBC Driver 17 for SQL Server"
+ODBC_DRIVER = "ODBC Driver 18 for SQL Server"
 
 
 # SQL Server Authentication connection
