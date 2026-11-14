@@ -6,6 +6,7 @@ uvicorn[standard]
 SQLAlchemy
 pyodbc
 pydantic
+email-validator
 python-dotenv
 
 # Optional: database schema migrations
