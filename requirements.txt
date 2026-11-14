@@ -1,0 +1,12 @@
+# FastAPI + SQL Server CRUD API
+# Install with: python -m pip install -r requirements.txt
+
+fastapi
+uvicorn[standard]
+SQLAlchemy
+pyodbc
+pydantic
+python-dotenv
+
+# Optional: database schema migrations
+alembic
