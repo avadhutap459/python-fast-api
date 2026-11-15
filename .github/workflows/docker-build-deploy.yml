@@ -1,5 +1,5 @@
 
-name: FastAPI CI-CD Pipeline
+name: FastAPI CI - Build and Push Image
 
 on:
   push:
@@ -11,13 +11,12 @@ permissions:
   contents: read
 
 concurrency:
-  group: fastapi-production-deployment
+  group: fastapi-image-build
   cancel-in-progress: false
 
 jobs:
-
   build-and-push:
-    name: Build and Push Docker Image
+    name: Build and Push Image to GHCR
     runs-on: ubuntu-latest
 
     permissions:
@@ -47,54 +46,3 @@ jobs:
           tags: |
             ghcr.io/avadhutap459/python-fast-api:latest
             ghcr.io/avadhutap459/python-fast-api:sha-${{ github.sha }}
-
-  deploy-to-rhel:
-    name: Deploy to RHEL Server
-    runs-on: self-hosted
-    needs: build-and-push
-
-    permissions:
-      contents: read
-      packages: read
-
-    steps:
-      - name: Pull and Deploy Latest Docker Image
-        env:
-          GHCR_USERNAME: ${{ github.actor }}
-          GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          set -e
-
-          echo "Logging in to GHCR..."
-
-          echo "$GHCR_TOKEN" | docker login ghcr.io \
-            -u "$GHCR_USERNAME" --password-stdin
-
-          echo "Pulling latest Docker image..."
-
-          docker pull ghcr.io/avadhutap459/python-fast-api:latest
-
-          echo "Removing old container if it exists..."
-
-          docker rm -f fastapi-ghcr-test || true
-
-          echo "Starting updated FastAPI container..."
-
-          docker run -d \
-            --name fastapi-ghcr-test \
-            --restart unless-stopped \
-            --env-file /opt/fastapi/python-db.env \
-            -p 8000:8000 \
-            ghcr.io/avadhutap459/python-fast-api:latest
-
-          echo "Waiting for application to start..."
-          sleep 10
-
-          echo "Checking API health..."
-
-          curl --fail --silent --show-error \
-            http://localhost:8000/ 
-
-          echo "Deployment completed successfully!"
-
-          docker logout ghcr.io
