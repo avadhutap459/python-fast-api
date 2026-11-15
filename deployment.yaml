@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dk-k8s-redhat-linux
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dk-k8s-redhat-linux
+  template:
+    metadata:
+      labels:
+        app: dk-k8s-redhat-linux
+    spec:
+      containers:
+      - name: dk-k8s-redhat-linux
+        image: ghcr.io/avadhutap459/python-fast-api:latest
+        ports:
+        - containerPort: 80

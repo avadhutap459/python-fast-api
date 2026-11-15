@@ -16,5 +16,5 @@ app.include_router(router)
 def root():
 
     return {
-        "message": "Hello SirJi : FastAPI SQL Server API is running"
+        "message": "Hello Avadhut Ji : FastAPI SQL Server API is running"
     }
